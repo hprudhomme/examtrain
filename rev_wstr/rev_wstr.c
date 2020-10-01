@@ -7,6 +7,16 @@ void    ft_putchar(char c)
     write(1, &c, 1);
 }
 
+void    ft_putstr(char *str)
+{   
+    int i = 0;
+    while (str[i])
+    {
+        ft_putchar(str[i]);
+        i++;
+    }
+}
+
 int     ft_str_len(char *s)
 {
     int i = 0;
@@ -18,7 +28,6 @@ int     ft_str_len(char *s)
 
 char    **ft_second_malloc(char *str, char **tab)
 {   
-    printf("hello3\n");
     int i = 0;
     int c = 0;
     int x = 0;
@@ -29,17 +38,14 @@ char    **ft_second_malloc(char *str, char **tab)
     {   
         if ((str[i] == ' ' || str[i] == '\t') && !(str[i - 1] == ' ' || str[i - 1] == '\t') && i != 0)
             {   
-                printf("c = %d\n", c);
-                printf("x = %d\n", x);
                 if (!(tab[x] = malloc(sizeof(char) * (c + 1))))
                     return NULL;
                 x++;
-                c = -1;
+                c = 0;
             }
-        c++;
+        if (!((str[i] == ' ' || str[i] == '\t')))
+            c++;
     }
-    printf("last c = %d\n", c);
-    printf("last x = %d\n", x);
     if (!(tab[x] = malloc(sizeof(char) * (c + 1))))
 		return (NULL);
     return (tab);
@@ -47,7 +53,6 @@ char    **ft_second_malloc(char *str, char **tab)
 
 char    **ft_first_malloc(char *str, char **tab)
 {   
-    printf("hello1\n");
     int i = 0;
     int c = 0;
     while(str[i] == ' ' || str[i] == '\t')
@@ -66,43 +71,45 @@ char    **ft_first_malloc(char *str, char **tab)
 char   **ft_rev_wstr(char *str)
 {
     char	**tab;
-    printf("hello\n");
 	tab = NULL;
 	if ((tab = ft_first_malloc(str, tab)) == NULL)
 		return (NULL);
-    printf("hello2\n");
 	if ((tab = ft_second_malloc(str, tab)) == NULL)
 		return (NULL);
-    printf("hey\n");
+    int lignes = 0;
     int i = 0;
-    int c = 0;
     int x = 0;
     int y = -1;
     while(str[i] == ' ' || str[i] == '\t')
         i++;
     --i;
     while (str[++i])
-    {
-        printf("hey");
-        if ((str[i] == ' ' || str[i] == '\t') && !(str[i - 1] != ' ' || str[i - 1] != '\t') && i != 0)
-        {
+    {   
+        if ((str[i] == ' ' || str[i] == '\t') && !(str[i - 1] == ' ' || str[i - 1] == '\t') && i != 0)
+        {   
             tab[x][++y] = '\0';
 			x++;
 			y = -1;
         }
-        else
-        {
+        if (!((str[i] == ' ' || str[i] == '\t')))
+        {   
             tab[x][++y] = str[i];
         }
     }
     tab[x + (y != -1)] = NULL;
-    if (!(tab = malloc(sizeof(char*) * (c + 1))))
-        return NULL;
-    while (*tab)
+    int z = 0;
+    while (tab[z])
 	{
-		printf("%s\n", *tab);
-		tab++;
+        z++;
 	}
+    z--;
+    while (z >= 0)
+    {
+        ft_putstr(tab[z]);
+        if (z)
+            ft_putchar(' ');
+        z--;
+    }
     return (tab);
 }
 
